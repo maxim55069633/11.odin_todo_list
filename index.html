@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="./scripts.js" defer></script>
+</head>
+<body>
+    <div class="header">
+        <img src="./images/book.png" alt="book">
+        <h1>Todo List</h1>
+        <img src="./images/pencil.png" alt="pencil">
+    </div>
+
+    <div class="listView">
+        
+    </div>
+
+    <div class="newProject">
+        <form action="#" method="post" id="add_new_project_form">
+
+
+            <div class="project_flex_area">
+                <div class="project_row">
+                    <label for="project_name">Project Name: </label>
+                    <input type="text" name="project_name" id="project_name" required>    
+                </div>
+    
+    
+                <div class="project_row">
+                    <label for="project_description">Description: </label>
+                    <textarea name="project_description" id="project_description" cols="30" rows="3" maxlength="1500" placeholder="Your description shouldn't be more than 1500 characters"></textarea>
+                </div>
+    
+                <div class="project_row">
+                    <label for="project_date">Due Date: </label>
+                    <input type="date" name="project_date" id="project_date" required>
+                </div>
+
+                <div class="project_row">
+                    <label for="project_status">Status: </label>
+                    <select name="project_status" id="project_status" required>
+                        <option value="Completed">Completed</option>
+                        <option value="Uncompleted">Uncompleted</option>
+                    </select>
+                </div>    
+            </div>
+
+
+            <div class="project_buttons">
+                <button type="button" class="project_cancel" form="add_new_project_form">
+                    Cancel
+                </button>
+                
+                <button type="submit" class="project_confirm" form="add_new_project_form">
+                    Confirm
+                </button>
+            </div>
+        </form>
+
+
+
+        <div class="project_add_icon">Add a project</div>
+    </div>
+
+
+
+</body>
+</html>
