@@ -64,8 +64,11 @@ div[class="header"]>img{
 	height: 75px;
 }
 
+
+
+
 /* listView */
-.project_item{
+.project_general{
 	display: flex;
 	padding: 15px 20px;
 	margin:  5px;
@@ -75,7 +78,7 @@ div[class="header"]>img{
 	color:white;
 }
 
-.project_item_pair{
+.project_general_pair{
 	display: flex;
 	flex-wrap: wrap;
 	gap:5px;
@@ -83,7 +86,7 @@ div[class="header"]>img{
 	margin: 0 5px;
 }
 
-div[class="project_item"]>span{
+div[class="project_general"]>span{
 	flex:1;
 	font-size: 25px;
 }
@@ -94,8 +97,84 @@ div[class="project_item"]>span{
 	padding:1px;
 	border: 1px solid #F9FAF8;
 	color: white;
+
+	display: flex;
+	align-items: center;
+}
+span[class="project_edit_icon collapsed"] svg{
+	transform: rotate(180deg);
 }
 
+span[class="project_edit_icon"] svg{
+	transform: rotate(0deg);
+}
+
+/* Project Edit View */
+
+.edit_project_legend{
+	margin: 5px;
+	font-size: 25px;
+	text-align: center;
+}
+
+.edit_project_flex_area{
+	
+	display:flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+
+.edit_project_row{
+	display: flex;
+	align-items: center;
+
+	margin:10px;
+	width: 300px;
+
+}
+
+
+div[class="edit_project_row"]>label{
+	width: 100px;
+}
+
+div[class="edit_project_row"]>:last-child{ 
+/* last-child of div is the input area */
+	flex:1;
+}
+
+.edit_project_buttons{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	align-items: center;
+
+	margin:  0 300px;
+}
+
+div[class="edit_project_buttons"]>button{
+	margin:5px;
+
+	color:#F9FAF8;
+	font-size: 25px;
+
+	width: 200px;
+    height: 60px;
+
+    border:3px solid #F9FAF8;
+	border-radius: 20px;
+
+}
+
+button[class="project_edit_submit"]{
+	background-color: green;
+}
+
+button[class="project_add_todo"]{
+	background-color: purple;
+}
 
 
 /* newProject */
@@ -103,10 +182,19 @@ div.newProject{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+
+	margin:15px;
+	border: 1px solid black;
 }
 
 div.newProject>form{
 	display: none;
+}
+
+.new_project_legend{
+	margin: 5px;
+	font-size: 25px;
+	text-align: center;
 }
 
 .project_flex_area{
@@ -118,9 +206,8 @@ div.newProject>form{
 .project_row{
 	display: flex;
 	align-items: center;
-
 	margin:10px;
-	width: 250px;
+	width: 300px;
 
 }
 
