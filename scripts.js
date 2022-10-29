@@ -8,20 +8,66 @@ class Todo{
         this.priority=priority;
         this.description=description;
     }
+
+    static create_default_todo () {
+        const sample =[new Todo("Sample", new Date().toISOString().slice(0, 10), new Date().toISOString().slice(0, 10), "Uncompleted", "1", "To be continued" )];
+        console.log(sample);
+        return sample;
+    }
+
+    static display_todo_lists( current_project, project_index ) {
+            const display_todo_list = document.querySelector(`.display_todo_list_${project_index}`);
+        
+            current_project["todo_lists"].forEach( (todo_item, todo_index) =>{
+                const todo_pair = document.createElement("div");
+                    const todo_object_title = document.createElement("span");
+                    todo_object_title.innerHTML =  `<span>Todo ${todo_index+1} Title: </span><span>${todo_item["title"]}</span>`;
+                    todo_object_title.classList.add("todo_general_pair");
+                    todo_pair.appendChild( todo_object_title );
+                    
+                    const todo_object_group = document.createElement("span");
+                        const todo_object_due_date = document.createElement("span");
+                        todo_object_due_date.innerHTML =  `<span>Due Date: </span><span>${todo_item["due_date"]}</span>`;
+                        todo_object_group.appendChild(todo_object_due_date);
+                        
+                        const todo_object_status = document.createElement("span");
+                        todo_object_status.innerHTML =  `<span>Status: </span><span>${todo_item["status"]}</span>`;
+                        todo_object_group.appendChild(todo_object_status);
+
+                        const todo_object_priority = document.createElement("span");
+                        todo_object_priority.innerHTML =  `<span>Priority: </span><span>${todo_item["priority"]}</span>`;
+                        todo_object_group.appendChild(todo_object_priority);
+                    todo_object_group.classList.add("todo_general_pair");
+                    todo_pair.appendChild( todo_object_group );
+
+                todo_pair.classList.add("todo_general");
+            display_todo_list.appendChild(todo_pair);
+            } 
+         )
+        
+    }
 }
 
 class Project{
-    constructor(title, description, due_date, status) {
+    constructor(title, description, due_date, status, todo_lists) {
         this.title=title;
         this.description=description;
         this.due_date=due_date;
         this.status = status;
+        this.todo_lists=todo_lists;
     }
 
     static initiate_users_project_book(){
 
-        const project_1 = new Project("TOP", "Finish TOP and find a job as soon as possible", "2023-2-1", "Completed");
-        const project_2 = new Project("Italian A2", "Improve my italian to next level so I can travel around italy someday", "2022-12-30", "Uncompleted");
+        const project_1_todo_1 = new Todo("Complete the Foundation module", "2022-8-1", "2022-9-1", "Completed", "2", "I will gain the basic knowledge about HTML, CSS, Javascript when I finish the Foundation module.");
+        const project_1_todo_2 = new Todo("Complete the Full Stack Javascript module", "2022-9-1", "2023-2-1", "Uncompleted", "1", "This part teaches me the job-ready skills and helps me build my unique portfolio.");
+
+        const project_2_todo_1 = new Todo("1 lesson a day on Duolingo", "2021-10-1", "2023-1-1", "Uncompleted", "3", "This is beneficial for my grammar and vocabulary.");
+        const project_2_todo_2 = new Todo("Italki italian intensive training", "2023-1-1", "2023-7-1", "Uncompleted", "2", "My listening and speaking skills will be improved.");
+        const project_2_todo_3 = new Todo("Upwork writing class", "2023-5-1", "2023-8-1","Uncompleted", "2" , "I will feel more confident in my italian and be able to understand the basic conversations");
+
+        const project_1 = new Project("TOP", "Finish TOP and find a job as soon as possible", "2023-2-1", "Completed", [project_1_todo_1, project_1_todo_2]);
+        const project_2 = new Project("Italian A2", "Improve my italian to next level so I can travel around italy someday", "2022-12-30", "Uncompleted", [project_2_todo_1, project_2_todo_2, project_2_todo_3]);
 
         const original_project=[];
         original_project.push(project_1);
@@ -80,7 +126,9 @@ class Project{
             formData.get("project_title"),
             formData.get("project_description"),
             formData.get("project_date"),
-            formData.get("project_status")
+            formData.get("project_status"),
+            Todo.create_default_todo()
+            // empty array represents we don't have any todo for newly created project 
             );
         
             Project.add_a_new_project(newly_added_project);
@@ -130,15 +178,15 @@ class Project{
             edit_button.addEventListener("submit", 
                 (e) => {
                     const formData = new FormData(e.target);
-
+                    const index_of_project_to_be_edited = Project.find_target_project(item_project["title"]);
+                    
                     const newly_edited_project=new Project(
                     formData.get("edit_project_title"),
                     formData.get("edit_project_description"),
                     formData.get("edit_project_date"),
-                    formData.get("edit_project_status")
+                    formData.get("edit_project_status"), 
+                    Project.users_project_book[index_of_project_to_be_edited]["todo_lists"]
                     );
-                    
-                    const index_of_project_to_be_edited = Project.find_target_project(item_project["title"]);
                     
                     
                     console.log(index_of_project_to_be_edited);
@@ -166,7 +214,7 @@ class Project{
                 const project_general = document.createElement("div");
 
                 const item_title =document.createElement("span");
-                item_title.innerHTML = `<span>Project Name: </span><span>${item['title']}</span>`;
+                item_title.innerHTML = `<span>Project ${index+1} Name: </span><span>${item['title']}</span>`;
                 item_title.classList.add("project_general_pair");
                 project_general.appendChild( item_title );
 
@@ -240,12 +288,20 @@ class Project{
                     </div>
                     </fieldset>
                     </form>
+
+                    <div class="todo_section">
+                        <h2>Todos for project ${index+1}</h2>
+                        <div class="display_todo_list_${index}"></div>
+                    </div>
+                    
                 </div>`;
                 project_item.appendChild(project_edit);
                 project_edit.classList.add("project_edit");
 
             project_item.classList.add("project_item");
             project_list.appendChild(project_item);
+
+            Todo.display_todo_lists(item, index);
 
             // Setting placeholder as an attribute in the input won't keep the spaces 
             document.getElementById(`edit_project_title_${index}`).placeholder =item["title"];

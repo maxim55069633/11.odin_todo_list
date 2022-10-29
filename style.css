@@ -67,7 +67,7 @@ div[class="header"]>img{
 
 
 
-/* listView */
+/* Project listView */
 .project_general{
 	display: flex;
 	padding: 15px 20px;
@@ -176,6 +176,44 @@ button[class="project_add_todo"]{
 	background-color: purple;
 }
 
+/* todo_section */
+.todo_section{
+	margin: 10px;
+	padding: 15px;
+	font-size: 20px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap:5px;
+
+
+	border-radius: 10px;
+	background-color: #3882F6;
+	color: white;
+
+}
+
+.todo_section>h2{
+	font-size: 30px;
+}
+
+/* Todo listView under each project */
+.todo_general{
+	display: flex;
+	flex-direction: row;
+	margin: 10px 0;
+	padding: 15px;
+
+	border: 3px solid white;
+	
+}
+
+.todo_general_pair{
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+}
 
 /* newProject */
 div.newProject{
