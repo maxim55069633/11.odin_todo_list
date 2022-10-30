@@ -64,9 +64,6 @@ div[class="header"]>img{
 	height: 75px;
 }
 
-
-
-
 /* Project listView */
 .project_general{
 	display: flex;
@@ -77,6 +74,11 @@ div[class="header"]>img{
 	background-color: #1F2937;
 	color:white;
 }
+
+.project_general>:last-child>span{
+	cursor: pointer;
+}
+
 
 .project_general_pair{
 	display: flex;
@@ -124,7 +126,6 @@ span[class="project_edit_icon"] svg{
 	justify-content: center;
 }
 
-
 .edit_project_row{
 	display: flex;
 	align-items: center;
@@ -133,7 +134,6 @@ span[class="project_edit_icon"] svg{
 	width: 300px;
 
 }
-
 
 div[class="edit_project_row"]>label{
 	width: 100px;
@@ -150,7 +150,6 @@ div[class="edit_project_row"]>:last-child{
 	flex-wrap: nowrap;
 	justify-content: space-around;
 	align-items: center;
-
 	margin:  0 300px;
 }
 
@@ -165,7 +164,6 @@ div[class="edit_project_buttons"]>button{
 
     border:3px solid #F9FAF8;
 	border-radius: 20px;
-
 }
 
 button[class="project_edit_submit"]{
@@ -191,7 +189,6 @@ button[class="project_add_todo"]{
 	border-radius: 10px;
 	background-color: #3882F6;
 	color: white;
-
 }
 
 .todo_section>h2{
@@ -214,6 +211,20 @@ button[class="project_add_todo"]{
 	flex-direction: column;
 	width: 400px;
 }
+
+/* This is for the controls within every todo item. */
+.todo_general>:last-child {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.todo_view_icon>span, .todo_edit_icon>span, .todo_del_icon>span{
+	cursor: pointer;
+	border: 1px solid white;
+} 
+
+
 
 /* newProject */
 div.newProject{
@@ -287,6 +298,8 @@ button[class="project_cancel"]{
 
 div[class="project_add_icon"]{
 
+	cursor: pointer;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -302,4 +315,35 @@ div[class="project_add_icon"]{
 
     border:3px solid #F9FAF8;
 	border-radius: 20px;
+}
+
+/* modal-dialog */
+.modal-dialog{
+	color:black;
+}
+
+.edit_todo_legend{
+	text-align: center;
+	margin:5px;
+}
+
+.edit_todo_flex_area{
+	display:flex;
+	flex-direction: column;
+}
+
+.edit_todo_row{
+	display: flex;
+
+	margin:10px;
+	width: 400px;
+
+}
+
+.edit_todo_row>label{
+	width: 150px;
+}
+
+.edit_todo_row>:last-child{
+	flex: 1;
 }

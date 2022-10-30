@@ -15,11 +15,141 @@ class Todo{
         return sample;
     }
 
+    static edit_todo(e){
+
+
+        const target_todo = e.target.parentNode.parentNode.parentNode;
+        const target_todo_index = target_todo.current_todo_index;
+
+        const target_project =target_todo.parentNode.parentNode.parentNode.parentNode.parentNode;
+        const target_project_index = target_project.current_project_index;
+        
+        const edit_todo_buttons = document.querySelectorAll(`.modal-body>form`);
+       
+        edit_todo_buttons.forEach(
+            item=>{
+                    const item_todo = item.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    const item_todo_index = item_todo.current_todo_index;
+                    const item_project =target_todo.parentNode.parentNode.parentNode.parentNode.parentNode;
+                    const item_project_index = item_project.current_project_index;
+       
+
+                    // console.log(item_project_index + item_todo_index);
+                    console.log(item);
+
+                    item.addEventListener("submit", 
+                        (e) => {
+                            const formData = new FormData(e.target);
+
+                            const newly_edited_todo=new Todo(
+                            formData.get("edit_todo_title"),
+                            formData.get("edit_todo_start_date"),
+                            formData.get("edit_todo_due_date"),
+                            formData.get("edit_todo_status"),
+                            formData.get("edit_todo_priority"),
+                            formData.get("edit_todo_description")
+                            );
+
+                            Project.users_project_book[item_project_index]["todo_lists"].splice(item_todo_index, 1, newly_edited_todo);
+                            Project.store_projects_locally();
+                        }
+                    );  
+                
+            }
+        );
+    }
+
+    static delete_todo(e){
+        
+        const target_todo = e.target.parentNode.parentNode.parentNode;
+        const target_todo_index = target_todo.current_todo_index;
+
+        const target_project =target_todo.parentNode.parentNode.parentNode.parentNode.parentNode;
+        const target_project_index = target_project.current_project_index;
+
+        Project.users_project_book[target_project_index]["todo_lists"].splice(target_todo_index, 1);
+        Project.store_projects_locally();
+        Project.display_projects();
+        
+    }
+
     static display_todo_lists( current_project, project_index ) {
             const display_todo_list = document.querySelector(`.display_todo_list_${project_index}`);
         
             current_project["todo_lists"].forEach( (todo_item, todo_index) =>{
                 const todo_pair = document.createElement("div");
+
+                    const todo_modal=document.createElement("div");
+                    todo_modal.innerHTML=`
+                    <div class="modal fade" id="todo_modal_project${project_index}_${todo_index}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="todo_modal_project${project_index}_${todo_index}Label" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="todo_modal_project${project_index}_${todo_index}">Project ${project_index+1} - Todo ${todo_index+1} </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                            
+                                <div class="modal-body">
+                                
+                                    <form action="#" method="post" id="edit_project${project_index}_todo${todo_index}">
+                                    <fieldset>
+                                    <legend class="edit_todo_legend">Edit this todo:</legend>
+                                    <div class="edit_todo_flex_area">
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_title">Todo Title: </label>
+                                            <input type="text" name="edit_todo_title" id="edit_todo_title_project${project_index}_todo${todo_index}" required>    
+                                        </div>
+
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_start_date">Todo Start Date: </label>
+                                            <input type="date" name="edit_todo_start_date" id="edit_todo_start_date_project${project_index}_todo${todo_index}" required>    
+                                        </div>
+
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_due_date">Todo Due Date: </label>
+                                            <input type="date" name="edit_todo_due_date" id="edit_todo_due_date_project${project_index}_todo${todo_index}" required>    
+                                        </div>
+
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_status">Status: </label>
+                                            <select name="edit_todo_status" id="edit_todo_status" required>
+                                                <option value="Completed">Completed</option>
+                                                <option value="Uncompleted">Uncompleted</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_priority">Priority: </label>
+                                            <select name="edit_todo_priority" id="edit_todo_priority" required>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="edit_todo_row">
+                                            <label for="edit_todo_description">Description: </label>
+                                            <textarea name="edit_todo_description" cols="30" rows="3" maxlength="1500"></textarea>
+                                        </div>
+                                    </div>
+                        
+                                        
+                                        
+                                    </fieldset>
+                                    </form>
+
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary  " data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary todo_edit_submit"  form="edit_project${project_index}_todo${todo_index}">Confirm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+                    todo_pair.appendChild(todo_modal);
+
                     const todo_object_title = document.createElement("span");
                     todo_object_title.innerHTML =  `<span>Todo ${todo_index+1} Title: </span><span>${todo_item["title"]}</span>`;
                     todo_object_title.classList.add("todo_general_pair");
@@ -40,11 +170,36 @@ class Todo{
                     todo_object_group.classList.add("todo_general_pair");
                     todo_pair.appendChild( todo_object_group );
 
+                    const todo_control_icon = document.createElement("span");
+                    todo_control_icon.innerHTML =
+                        `<span class="todo_view_icon"><span>VIEW</span></span>
+                        <span class="todo_edit_icon" data-bs-toggle="modal" data-bs-target="#todo_modal_project${project_index}_${todo_index}" ><span>EDIT</span> </span>
+                        <span class="todo_del_icon"><span>DELETE</span></span>`;
+                    todo_control_icon.classList.add("todo_general_pair");
+                    todo_pair.appendChild(todo_control_icon);
+
                 todo_pair.classList.add("todo_general");
+                todo_pair.current_todo_index = todo_index;
+                
+                
             display_todo_list.appendChild(todo_pair);
+            
             } 
-         )
-        
+         );
+
+
+        // edit todo listener
+        const edit_todo_buttons =document.querySelectorAll(".todo_edit_icon");
+        edit_todo_buttons.forEach( (item) =>{
+            item.addEventListener("click", Todo.edit_todo );
+        } )
+
+        // delete todo listener
+        const delete_todo_buttons = document.querySelectorAll(".todo_del_icon");
+        delete_todo_buttons.forEach( (item) => {
+            item.addEventListener("click", Todo.delete_todo );
+        } )
+
     }
 }
 
@@ -138,30 +293,32 @@ class Project{
         });
     }
 
+    // We don't need this find function anymore, because the index has been stored in the object as an attribute.
+    // static find_target_project(target_element_title){
+    //     const my_current_projects = Project.users_project_book;
 
-    static find_target_project(target_element_title){
-        const my_current_projects = Project.users_project_book;
+    //     let target_index = -1;
+    //             my_current_projects.forEach( (item, index) => {
 
-        let target_index = -1;
-                my_current_projects.forEach( (item, index) => {
+    //                 if ( item["title"]  === target_element_title)
+    //                 // it's better to check id rather than the title. 
+    //                     target_index= index;
 
-                    if ( item["title"]  === target_element_title)
-                    // it's better to check id rather than the title. 
-                        target_index= index;
-
-                }
-            )
-        return target_index;
-    }
+    //             }
+    //         )
+    //     return target_index;
+    // }
 
     static delete_project(e){
         
         const target_element = e.target.parentNode.parentNode.parentNode;
-        const target_element_title = target_element.childNodes[0].childNodes[1].textContent;
-        
         // const my_current_projects = this.users_project_book; won't work Here the scope of this has changed.
         
-        const index_of_project_to_be_deleted = Project.find_target_project(target_element_title);
+        // const index_of_project_to_be_deleted = Project.find_target_project(target_element_title);
+        // Since we store the project index as an attribute, we don't need a find function anymore.
+
+        const index_of_project_to_be_deleted = target_element.parentNode.current_project_index
+
         // scripts.js:106 Uncaught TypeError: this.find_target_project is not a function
         // This is the same reason like the above. We call the function asynchronously
 
@@ -170,16 +327,15 @@ class Project{
         Project.display_projects();
     }
 
-
     static edit_project(){
         this.users_project_book.forEach( (item_project, index)=> {
             const edit_button = document.querySelector(`form[id="edit_project_form_${index}"]`);
          
             edit_button.addEventListener("submit", 
                 (e) => {
+                    const index_of_project_to_be_edited = e.target.parentNode.parentNode.parentNode.current_project_index;
                     const formData = new FormData(e.target);
-                    const index_of_project_to_be_edited = Project.find_target_project(item_project["title"]);
-                    
+
                     const newly_edited_project=new Project(
                     formData.get("edit_project_title"),
                     formData.get("edit_project_description"),
@@ -188,7 +344,6 @@ class Project{
                     Project.users_project_book[index_of_project_to_be_edited]["todo_lists"]
                     );
                     
-                    
                     console.log(index_of_project_to_be_edited);
                     Project.users_project_book.splice(index_of_project_to_be_edited,1,newly_edited_project);
                     Project.store_projects_locally();
@@ -196,10 +351,6 @@ class Project{
             );  
            }
         );
-
-        
-
-
     }
 
     static display_projects(){
@@ -276,7 +427,6 @@ class Project{
                         </div>    
                     </div>
         
-        
                     <div class="edit_project_buttons">
                         <button type="submit" class="project_edit_submit" form="edit_project_form_${index}">
                             Save changes
@@ -300,6 +450,7 @@ class Project{
 
             project_item.classList.add("project_item");
             project_list.appendChild(project_item);
+            project_item.current_project_index= index;
 
             Todo.display_todo_lists(item, index);
 
@@ -310,14 +461,9 @@ class Project{
 
         const delete_buttons = document.querySelectorAll(".project_del_icon");
         delete_buttons.forEach(item => item.addEventListener("click", this.delete_project) );
-
         this.edit_project();
     }
-
-
 }
-
-
 
 // Display the existing projects
 Project.display_projects();
