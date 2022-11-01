@@ -219,10 +219,36 @@ button[class="project_add_todo"]{
 	gap: 8px;
 }
 
-.todo_view_icon>span, .todo_edit_icon>span, .todo_del_icon>span{
+.todo_detail_icon>span, .todo_edit_icon>span, .todo_del_icon>span{
 	cursor: pointer;
 	border: 1px solid white;
 } 
+
+
+/* modal-dialog  add todo*/
+.modal-dialog{
+	color:black;
+}
+
+.add_todo_flex_area{
+	display:flex;
+	flex-direction: column;
+}
+
+.add_todo_row{
+	display: flex;
+	margin:10px;
+	width: 400px;
+
+}
+
+.add_todo_row>label{
+	width: 150px;
+}
+
+.add_todo_row>:last-child{
+	flex: 1;
+}
 
 
 
@@ -317,7 +343,7 @@ div[class="project_add_icon"]{
 	border-radius: 20px;
 }
 
-/* modal-dialog */
+/* modal-dialog  edit todo*/
 .modal-dialog{
 	color:black;
 }
@@ -346,4 +372,9 @@ div[class="project_add_icon"]{
 
 .edit_todo_row>:last-child{
 	flex: 1;
+}
+
+.instruction{
+	margin:20px;
+	font-size: 20px;
 }
