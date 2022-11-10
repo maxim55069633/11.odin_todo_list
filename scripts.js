@@ -104,22 +104,31 @@ class Todo{
     static sorted_by_title(a,b){
         if ( a["title"] <= b["title"] )
             return -1;
-        else if ( a["title"] > b["title"] )
+        else 
             return 1;
     }
 
     static sorted_by_status(a,b){
         if ( a["status"] <= b["status"] )
             return -1;
-        else if ( a["status"] > b["status"] )
+        else
             return 1;
     }
 
     static sorted_by_priority(a,b){
-        if (a["priority"] <= b["priority"]) {
+        if (a["priority"] <= b["priority"]) 
             return -1;
-        } else {
+         else 
             return 1;
+        
+    }
+
+    static sorted_by_due_date(a,b){
+        if (a["due_date"] >= b["due_date"]) {
+            return 1;
+            // Make sure the most ergent event comes first 
+        } else {
+            return -1;
         }
     }
 
@@ -132,6 +141,8 @@ class Todo{
             Project.users_project_book[current_project_index]["todo_lists"].sort( Todo.sorted_by_priority);
         } else if (sort_by === 'title') {
             Project.users_project_book[current_project_index]["todo_lists"].sort( Todo.sorted_by_title);
+        } else if (sort_by === 'due_date' ){
+            Project.users_project_book[current_project_index]["todo_lists"].sort( Todo.sorted_by_due_date);
         }
 
         Todo.display_todo_section();
@@ -171,7 +182,7 @@ class Todo{
                             
                                 <div class="modal-body">
                                 
-                                    <form action="#" class="edit_todo_form" method="post" id="edit_project${project_index}_todo${todo_index}">
+                                    <form action="#" class="edit_todo_form"  id="edit_project${project_index}_todo${todo_index}">
                                     <fieldset>
                                     <legend class="edit_todo_legend">Edit this todo:</legend>
                                     <div class="edit_todo_flex_area">
@@ -507,7 +518,7 @@ class Project{
                 project_edit.innerHTML = `
 
                 <div id="collapse_${index}" class="accordion-collapse collapse" aria-labelledby="heading_${index}" >
-                    <form action="#" method="post" id="edit_project_form_${index}">
+                    <form action="#"  id="edit_project_form_${index}">
                     <fieldset>
                     <legend class="edit_project_legend">Edit this project:</legend>
                     <div class="edit_project_flex_area">
@@ -560,7 +571,7 @@ class Project{
                             </div>
                             <div class="modal-body">
 
-                            <form action="#" class="add_todo_form" method="post" id="add_todo_for_project${index}">
+                            <form action="#" class="add_todo_form" id="add_todo_for_project${index}">
                                 <fieldset>
                                 <div class="add_todo_flex_area">
                                     <div class="add_todo_row">
