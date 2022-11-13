@@ -101,6 +101,7 @@ class Todo{
          )
     }
 
+    // 2. Implement the sort feature by customizing array sort function.
     static sorted_by_title(a,b){
         if ( a["title"] <= b["title"] )
             return -1;
@@ -170,6 +171,7 @@ class Todo{
             current_project["todo_lists"].forEach( (todo_item, todo_index) =>{
                 const todo_pair = document.createElement("div");
 
+                // 3. Apply different bootstrap components like: modal, accordin, tooltip.
                     const todo_modal=document.createElement("div");
                     todo_modal.innerHTML=`
                     <div class="modal fade" id="todo_modal_project${project_index}_${todo_index}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="todo_modal_project${project_index}_${todo_index}Label" aria-hidden="true">
@@ -320,6 +322,7 @@ class Project{
         return original_project;
     }
 
+    // 1. Use sessionStorage to store the data within the page. (The information won't be lost when the page is refreshed.)
     static is_session_stored_before(){
         let test = JSON.parse(sessionStorage.getItem("session"));
         if (test !== null)
@@ -327,7 +330,6 @@ class Project{
         else
             return false;
     }
-
 
     static store_projects_locally(){
         sessionStorage.setItem("session", JSON.stringify( this.users_project_book ));
@@ -632,6 +634,8 @@ class Project{
 
             project_item.classList.add("project_item");
             project_list.appendChild(project_item);
+
+            // 4. Set attributes to the element so that passing arguments to addEventlistener function becomes easier.
             project_item.current_project_index= index;
 
 
